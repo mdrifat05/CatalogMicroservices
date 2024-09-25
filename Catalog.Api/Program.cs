@@ -1,3 +1,4 @@
+using BuildingBlocks.Exceptions.Handler;
 using Catalog.Application;
 using Catalog.Infrastructure;
 
@@ -13,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication()
                 .AddInfrastructure(builder.Configuration);
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,5 +30,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseExceptionHandler(options => { });
 
 app.Run();

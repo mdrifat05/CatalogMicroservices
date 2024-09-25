@@ -28,3 +28,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Catalog.Api.dll"]
+
+#dotnet pack -o path
+#dotnet nuget add source path -n name
+#dotnet pack -p:PackageVersion=1.0.1 -o path
