@@ -13,19 +13,9 @@ public class CreateProductCommandHandler(IAppDbContext dbContext) : ICommandHand
         var product = CreateNewProduct(command.ProductDto);
 
         dbContext.Products.Add(product);
-        try
-        {
-            await dbContext.SaveChangesAsync(cancellationToken);
-            return new CreateProductResult(product.Id.Value);
 
-        }
-        catch (Exception e)
-        {
-
-            throw;
-        }
-
-        //return new CreateProductResult(product.Id.Value);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        return new CreateProductResult(product.Id.Value);
     }
 
     private static Product CreateNewProduct(ProductDto productDto)
