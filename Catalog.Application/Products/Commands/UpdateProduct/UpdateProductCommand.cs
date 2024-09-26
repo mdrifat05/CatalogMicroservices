@@ -4,8 +4,8 @@ using FluentValidation;
 
 namespace Catalog.Application.Products.Commands.UpdateProduct;
 
-public record UpdateProductCommand(ProductDto ProductDto) : ICommand<UpdateProductResponse>;
-public record UpdateProductResponse(bool isSuccess);
+public record UpdateProductCommand(ProductDto ProductDto) : ICommand<UpdateProductResult>;
+public record UpdateProductResult(bool IsSuccess);
 
 public class UpdateProductValidator : AbstractValidator<UpdateProductCommand>
 {

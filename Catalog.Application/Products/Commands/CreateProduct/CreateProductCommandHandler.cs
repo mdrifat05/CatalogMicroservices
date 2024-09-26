@@ -6,15 +6,26 @@ using Catalog.Domain.ValueObjects;
 
 namespace Catalog.Application.Products.Commands.CreateProduct;
 
-public class CreateProductCommandHandler(IAppDbContext dbContext) : ICommandHandler<CreateProductCommand, CreateProductResponse>
+public class CreateProductCommandHandler(IAppDbContext dbContext) : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
-    public async Task<CreateProductResponse> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+    public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
         var product = CreateNewProduct(command.ProductDto);
 
         dbContext.Products.Add(product);
-        await dbContext.SaveChangesAsync(cancellationToken);
-        return new CreateProductResponse(product.Id.Value);
+        try
+        {
+            await dbContext.SaveChangesAsync(cancellationToken);
+            return new CreateProductResult(product.Id.Value);
+
+        }
+        catch (Exception e)
+        {
+
+            throw;
+        }
+
+        //return new CreateProductResult(product.Id.Value);
     }
 
     private static Product CreateNewProduct(ProductDto productDto)
@@ -30,7 +41,7 @@ public class CreateProductCommandHandler(IAppDbContext dbContext) : ICommandHand
             productDto.ProductStatusDto,
             productDto.Description,
             productDto.ImageUrl,
-            productDto.CategoryId
+            CategoryId.Of(productDto.CategoryId)
             );
 
         return newProduct;

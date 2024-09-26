@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Catalog.Application.Products.Commands.CreateProduct;
 
-public record CreateProductCommand(ProductDto ProductDto) : ICommand<CreateProductResponse>;
+public record CreateProductCommand(ProductDto ProductDto) : ICommand<CreateProductResult>;
 
-public record CreateProductResponse(Guid Id);
+public record CreateProductResult(Guid Id);
 
 public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
 {

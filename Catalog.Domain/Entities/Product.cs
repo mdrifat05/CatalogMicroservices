@@ -23,29 +23,27 @@ public sealed class Product : Entity<ProductId>
 
     public CategoryId? CategoryId { get; set; } = default!;
 
-    public static Product Create(ProductId id, string name, ProductWeight productWeight, ProductPrice productPrice, ProductStatus productStatus, string? description = null, string? imageUrl = null, CategoryId? categoryId = null)
+    public static Product Create(ProductId id, string name, ProductWeight weight, ProductPrice price, ProductStatus status, string? description = null, string? imageUrl = null, CategoryId? categoryId = null)
     {
-        var product = new Product
-        {
-            Id = id,
-            Name = name,
-            Description = description,
-            ImageUrl = imageUrl,
-            Weight = productWeight,
-            Price = productPrice,
-            Status = productStatus,
-            CategoryId = categoryId,
-        };
+        var product = new Product { Id = id };
+        product.SetProductDetails(name, weight, price, status, description, imageUrl, categoryId);
+        //publish domain event
         return product;
     }
-    public void Update(string name, ProductWeight productWeight, ProductPrice productPrice, ProductStatus productStatus, CategoryId? categoryId, string? description = null, string? imageUrl = null)
+    public void Update(string name, ProductWeight weight, ProductPrice price, ProductStatus status, CategoryId? categoryId, string? description = null, string? imageUrl = null)
+    {
+        SetProductDetails(name, weight, price, status, description, imageUrl, categoryId);
+        //publish domain event
+    }
+
+    private void SetProductDetails(string name, ProductWeight weight, ProductPrice price, ProductStatus status, string? description, string? imageUrl, CategoryId? categoryId)
     {
         Name = name;
         Description = description;
         ImageUrl = imageUrl;
-        Weight = productWeight;
-        Price = productPrice;
-        Status = productStatus;
+        Weight = weight;
+        Price = price;
+        Status = status;
         CategoryId = categoryId;
     }
 }

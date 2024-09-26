@@ -6,22 +6,17 @@ using Catalog.Domain.Entities;
 using Catalog.Domain.ValueObjects;
 namespace Catalog.Application.Products.Commands.UpdateProduct;
 
-public class UpdateProductCommandHandler(IAppDbContext dbContext) : ICommandHandler<UpdateProductCommand, UpdateProductResponse>
+public class UpdateProductCommandHandler(IAppDbContext dbContext) : ICommandHandler<UpdateProductCommand, UpdateProductResult>
 {
-    public async Task<UpdateProductResponse> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
+    public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
-        var product = await dbContext.Products.FindAsync([command.ProductDto.Id], cancellationToken);
-
-        if (product is null)
-        {
-            throw new ProductNotFoundException(command.ProductDto.Id);
-        }
+        var product = await dbContext.Products.FindAsync([ProductId.Of(command.ProductDto.Id)], cancellationToken) ?? throw new ProductNotFoundException(command.ProductDto.Id);
 
         UpdateProductWithNewValue(product, command.ProductDto);
         dbContext.Products.Update(product);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new UpdateProductResponse(true);
+        return new UpdateProductResult(true);
     }
 
     private static void UpdateProductWithNewValue(Product product, ProductDto productDto)
@@ -34,7 +29,7 @@ public class UpdateProductCommandHandler(IAppDbContext dbContext) : ICommandHand
            productWeight,
            productPrice,
            productDto.ProductStatusDto,
-           productDto.CategoryId,
+           CategoryId.Of(productDto.CategoryId),
            productDto.Description,
            productDto.ImageUrl
        );
