@@ -13,7 +13,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     public CreateProductCommandValidator()
     {
         RuleFor(x => x.ProductDto.Name).NotNull().NotEmpty().WithMessage("Name is required");
-        RuleFor(x => x.ProductDto.Description).NotEmpty().NotNull().WithMessage("Description is required");
+        RuleFor(x => x.ProductDto.Description).NotNull().NotEmpty().WithMessage("Description is required");
         RuleFor(x => x.ProductDto.ProductPriceDto.Amount).GreaterThan(0).WithMessage("Price must be greater than 0");
         RuleFor(x => x.ProductDto.ProductStatusDto).NotNull().NotEmpty().WithMessage("Status is required");
     }
