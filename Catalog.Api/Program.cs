@@ -13,6 +13,7 @@ builder.Services.AddApplication()
                 .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddHealthChecks();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,5 +30,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseExceptionHandler(options => { });
+
+app.UseHealthChecks("/health");
 
 app.Run();
