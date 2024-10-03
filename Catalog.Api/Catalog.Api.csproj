@@ -24,8 +24,4 @@
     <ProjectReference Include="..\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Products\" />
-  </ItemGroup>
-
 </Project>

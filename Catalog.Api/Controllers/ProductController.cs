@@ -1,4 +1,4 @@
-﻿using Catalog.Application.Dtos;
+﻿using Catalog.Api.Models.Products;
 using Catalog.Application.Pagination;
 using Catalog.Application.Products.Commands.CreateProduct;
 using Catalog.Application.Products.Commands.DeleteProduct;
@@ -11,26 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Api.Controllers;
 
-public sealed record CreateProductRequest(ProductDto ProductDto);
-
-public sealed record CreateProductResponse(Guid Id);
-
-public sealed record UpdateProductRequest(ProductDto ProductDto);
-
-public sealed record UpdateProductResponse(bool IsSuccess);
-
-public sealed record DeleteProductResponse(bool IsSuccess);
-
-public sealed record GetByIdProductResponse(ProductDto Product);
-
-public sealed record GetProductResponse(PaginatedResult<ProductDto> Product);
-
-
 [Route("api/[controller]")]
 [ApiController]
 public class ProductController(ISender sender) : ControllerBase
 {
-
     // GET api/product
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] PaginationRequest request)
